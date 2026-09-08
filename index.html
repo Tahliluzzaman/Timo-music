@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Timo Music — Playlist</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body class="dark">
+  <main class="container">
+    <header>
+      <h1>Timo Music — My YouTube Playlist</h1>
+      <p class="subtitle">Plays directly from YouTube (embedded). No audio is hosted here.</p>
+    </header>
+
+    <section class="player">
+      <!-- Embed the playlist using the standard YouTube embed for playlists -->
+      <div class="iframe-wrap">
+        <iframe id="yt-player" width="100%" height="315" 
+          src="https://www.youtube.com/embed/videoseries?list=PLYb2yfXnHh-KBATeJ6NS5u_eSt8zBHdj1&rel=0&iv_load_policy=3"
+          frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <section class="playlist-ui">
+      <div class="controls">
+        <label for="api-key">YouTube Data API Key (optional)</label>
+        <input id="api-key" placeholder="Paste API key here to load titles/thumbnails">
+        <button id="load-list">Load playlist details</button>
+        <button id="toggle-theme">Toggle theme</button>
+      </div>
+
+      <ul id="track-list" class="track-list">
+        <!-- Populated by js/app.js when API key is provided -->
+      </ul>
+    </section>
+
+    <footer>
+      <p>To deploy: enable GitHub Pages for this repository (root or gh-pages). A workflow is included to auto-deploy.</p>
+    </footer>
+  </main>
+
+  <script>window.PLAYLIST_ID = 'PLYb2yfXnHh-KBATeJ6NS5u_eSt8zBHdj1';</script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
