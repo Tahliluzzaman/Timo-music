@@ -1,0 +1,29 @@
+/* Dark theme styles for Timo Music playlist site */
+:root{
+  --bg:#0b0f14;
+  --card:#0f1720;
+  --muted:#9aa6b2;
+  --accent:#1db954; /* Spotify-like green accent */
+  --text:#e6eef3;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:980px;margin:28px auto;padding:24px}
+header h1{margin:0;font-size:1.6rem}
+.subtitle{color:var(--muted);margin-top:6px}
+.player{margin-top:18px}
+.iframe-wrap{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);padding:6px;border-radius:8px;overflow:hidden}
+.controls{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.controls label{font-size:0.9rem;color:var(--muted)}
+#api-key{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px;border-radius:6px;min-width:300px}
+button{background:var(--card);border:1px solid rgba(255,255,255,0.04);color:var(--text);padding:8px 12px;border-radius:6px;cursor:pointer}
+button:hover{box-shadow:0 4px 16px rgba(0,0,0,0.45)}
+.track-list{list-style:none;padding:0;margin:12px 0 48px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.track{display:flex;gap:10px;align-items:center;padding:10px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.012), transparent);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
+.track:hover{outline:2px solid rgba(29,185,84,0.08)}
+.thumb{width:72px;height:72px;flex-shrink:0;border-radius:6px;object-fit:cover}
+.info{flex:1}
+.title{font-size:0.95rem;margin:0}
+.channel{font-size:0.8rem;color:var(--muted);margin-top:4px}
+footer{color:var(--muted);margin-top:28px;font-size:0.9rem}
+@media (max-width:640px){.controls{flex-direction:column;align-items:stretch}#api-key{min-width:100%}}
