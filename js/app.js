@@ -1,65 +1,110 @@
-const tokenInput = document.getElementById("token");
-const status = document.getElementById("status");
-const music = document.getElementById("music");
-const player = document.getElementById("player");
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
 
-function setConnected(connected) {
-  music.hidden = !connected;
-  status.textContent = connected
-    ? "Token saved locally. FabTune verification is not configured yet."
-    : "No token connected.";
+const tokenInput = document.getElementById("token");
+const tokenStatus = document.getElementById("tokenStatus");
+const googleFallback = document.getElementById("googleFallback");
+const googleStatus = document.getElementById("googleStatus");
+const music = document.getElementById("music");
+
+// FabTune's official validation API is not known yet.
+// Until it is configured, we cannot verify any token.
+async function validateFabTuneToken(token) {
+  if (!token) return false;
+
+  // TODO: call FabTune's supported API here.
+  return false;
 }
 
-document.getElementById("toggle").onclick = () => {
-  tokenInput.type =
-    tokenInput.type === "password" ? "text" : "password";
-};
-
-document.getElementById("login").onclick = () => {
+document.getElementById("tokenLogin").addEventListener("click", async () => {
   const token = tokenInput.value.trim();
 
   if (!token) {
-    status.textContent = "Please enter your token.";
+    tokenStatus.textContent = "Please enter a token.";
+    googleFallback.hidden = false;
+    initializeGoogleLogin();
     return;
   }
+
+  tokenStatus.textContent = "Checking token…";
 
   try {
-    localStorage.setItem("timo_fabtune_token", token);
+    const valid = await validateFabTuneToken(token);
+
+    if (valid) {
+      showMusic("FabTune");
+    } else {
+      tokenStatus.textContent =
+        "Token could not be verified. Try Google Login.";
+      googleFallback.hidden = false;
+      initializeGoogleLogin();
+    }
   } catch (error) {
-    status.textContent = "Could not save token in this browser.";
+    tokenStatus.textContent =
+      "Token connection failed. Try Google Login.";
+    googleFallback.hidden = false;
+    initializeGoogleLogin();
+  }
+});
+
+let googleInitialized = false;
+
+function initializeGoogleLogin() {
+  if (googleInitialized) return;
+
+  if (!window.google?.accounts?.id) {
+    googleStatus.textContent =
+      "Google sign-in is loading. Please wait and try again.";
     return;
   }
 
-  setConnected(true);
-};
-
-document.getElementById("logout").onclick = () => {
-  localStorage.removeItem("timo_fabtune_token");
-  tokenInput.value = "";
-  player.pause();
-  player.removeAttribute("src");
-  player.load();
-  document.getElementById("results").replaceChildren();
-  setConnected(false);
-};
-
-document.getElementById("searchForm").onsubmit = (event) => {
-  event.preventDefault();
-
-  if (!localStorage.getItem("timo_fabtune_token")) {
-    setConnected(false);
+  if (GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
+    googleStatus.textContent =
+      "Setup required: add your Google OAuth Client ID in js/app.js.";
     return;
   }
 
-  document.getElementById("message").textContent =
-    "FabTune API is not connected yet. Search and playback require its API endpoint and response format.";
-};
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleResponse
+  });
 
-const savedToken = localStorage.getItem("timo_fabtune_token");
+  google.accounts.id.renderButton(
+    document.getElementById("googleButton"),
+    {
+      theme: "filled_black",
+      size: "large",
+      text: "signin_with",
+      shape: "rectangular"
+    }
+  );
 
-if (savedToken) {
-  tokenInput.value = savedToken;
-  setConnected(true);
-} else {
-  setConnected(false);
+  googleInitialized = true;
 }
+
+function handleGoogleResponse(response) {
+  if (!response.credential) {
+    googleStatus.textContent = "Google sign-in failed.";
+    return;
+  }
+
+  // The credential must be verified on a trusted backend
+  // before treating the user as authenticated.
+  googleStatus.textContent =
+    "Google credential received. Server verification must be configured.";
+
+  // Demo UI only: do not grant protected music access yet.
+}
+
+function showMusic(method) {
+  music.hidden = false;
+  document.getElementById("accessStatus").textContent =
+    "Connected using " + method + ".";
+}
+
+document.getElementById("logout").addEventListener("click", () => {
+  music.hidden = true;
+  tokenInput.value = "";
+  googleStatus.textContent = "";
+  tokenStatus.textContent = "Signed out.";
+  googleFallback.hidden = true;
+});
