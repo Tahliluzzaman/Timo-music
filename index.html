@@ -5,36 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Timo Music</title>
   <link rel="stylesheet" href="./assets/styles.css">
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script src="./js/app.js" defer></script>
 </head>
 <body>
-  <header>
+  <main class="container">
     <h1>🎵 Timo Music</h1>
-    <p>Your music, your token.</p>
-  </header>
+    <p>Sign in to continue</p>
 
-  <main>
     <section class="panel">
-      <h2>FabTune Token Login</h2>
-      <input id="token" type="password" placeholder="Paste your FabTune token">
-      <button id="toggle" type="button">Show</button>
-      <button id="login" type="button">Connect</button>
-      <button id="logout" type="button">Remove Token</button>
-      <p id="status">Enter your token to continue.</p>
+      <h2>FabTune Token</h2>
+      <input id="token" type="password"
+             placeholder="Enter FabTune token">
+      <button id="tokenLogin">Connect Token</button>
+      <p id="tokenStatus">Enter your token to try connecting.</p>
+
+      <div id="googleFallback" hidden>
+        <hr>
+        <h3>Token connection unavailable?</h3>
+        <p>Try signing in with Google.</p>
+        <div id="googleButton"></div>
+        <p id="googleStatus"></p>
+      </div>
     </section>
 
-    <section class="panel" id="music" hidden>
-      <h2>Search Music</h2>
-      <form id="searchForm">
-        <input id="query" type="search" placeholder="Song or artist name" required>
-        <button type="submit">Search</button>
-      </form>
-      <p id="message">Music API needs to be configured.</p>
-      <div id="results"></div>
-      <h3 id="title">Nothing playing</h3>
-      <audio id="player" controls></audio>
+    <section id="music" class="panel" hidden>
+      <h2>Welcome to Timo Music!</h2>
+      <p id="accessStatus"></p>
+      <p>Music playback will be available when a supported music API is connected.</p>
+      <button id="logout">Sign out</button>
     </section>
   </main>
-
-  <script src="./js/app.js"></script>
 </body>
 </html>
