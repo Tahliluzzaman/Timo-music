@@ -3,151 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#09090f">
-  <meta name="description" content="Timo Music — your personal YouTube music playlist.">
-  <title>Timo Music — Your Sound, Your World</title>
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://i.ytimg.com">
+  <title>Timo Music</title>
   <link rel="stylesheet" href="./assets/styles.css">
 </head>
-<body class="dark">
-  <div class="app-shell">
-    <aside class="sidebar">
-      <a href="#" class="brand">
-        <span class="brand-icon">T</span>
-        <span>Timo<span class="brand-accent">Music</span></span>
-      </a>
+<body>
+  <header>
+    <h1>🎵 Timo Music</h1>
+    <p>Your music, your token.</p>
+  </header>
 
-      <p class="nav-label">YOUR SPACE</p>
-      <a class="nav-link active" href="#home">⌂ <span>Home</span></a>
-      <a class="nav-link" href="#playlist">♫ <span>My Playlist</span></a>
+  <main>
+    <section class="panel">
+      <h2>FabTune Token Login</h2>
+      <input id="token" type="password" placeholder="Paste your FabTune token">
+      <button id="toggle" type="button">Show</button>
+      <button id="login" type="button">Connect</button>
+      <button id="logout" type="button">Remove Token</button>
+      <p id="status">Enter your token to continue.</p>
+    </section>
 
-      <div class="sidebar-card">
-        <div class="music-orb">♫</div>
-        <h3>Your music.</h3>
-        <p>Your mood. Your world.</p>
-        <a href="#playlist" class="text-link">Explore playlist ↗</a>
-      </div>
+    <section class="panel" id="music" hidden>
+      <h2>Search Music</h2>
+      <form id="searchForm">
+        <input id="query" type="search" placeholder="Song or artist name" required>
+        <button type="submit">Search</button>
+      </form>
+      <p id="message">Music API needs to be configured.</p>
+      <div id="results"></div>
+      <h3 id="title">Nothing playing</h3>
+      <audio id="player" controls></audio>
+    </section>
+  </main>
 
-      <div class="sidebar-footer">
-        <span class="status-dot"></span> Connected to YouTube
-      </div>
-    </aside>
-
-    <main class="main-content" id="home">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">YOUR PERSONAL MUSIC SPACE</p>
-          <h1>Feel the <span class="gradient-text">music.</span></h1>
-        </div>
-        <button id="toggle-theme" class="icon-button"
-          aria-label="Toggle light and dark theme" title="Toggle theme">☼</button>
-      </header>
-
-      <section class="hero">
-        <div class="hero-content">
-          <span class="pill"><span class="status-dot"></span> YOUR COLLECTION</span>
-          <h2>Every track.<br>One <span class="gradient-text">vibe.</span></h2>
-          <p>Your favorite sounds, all in one place. Press play and enjoy.</p>
-          <a class="primary-button" href="#player">▶ &nbsp; Start listening</a>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-ring ring-one"></div>
-          <div class="art-ring ring-two"></div>
-          <div class="art-disc"><span>♫</span></div>
-          <span class="floating-note note-one">♪</span>
-          <span class="floating-note note-two">♫</span>
-        </div>
-      </section>
-
-      <section class="player-section" id="player">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">NOW PLAYING</p>
-            <h2>Your music player</h2>
-          </div>
-          <span class="live-badge"><span class="status-dot"></span> YouTube</span>
-        </div>
-
-        <div class="player-card">
-          <div class="iframe-wrap">
-            <iframe
-              id="yt-player"
-              title="Timo Music YouTube playlist player"
-              src="https://www.youtube.com/embed/videoseries?list=PLYb2yfXnHh-KBATeJ6NS5u_eSt8zBHdj1&rel=0"
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="player-caption">
-            <div class="mini-cover">♫</div>
-            <div class="track-meta">
-              <strong id="current-title">Timo Music Playlist</strong>
-              <span id="current-artist">Playing from YouTube</span>
-            </div>
-            <span class="equalizer" aria-label="Music player">
-              <i></i><i></i><i></i><i></i>
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <section class="playlist-section" id="playlist">
-        <div class="section-heading playlist-heading">
-          <div>
-            <p class="eyebrow">MADE FOR YOUR MOOD</p>
-            <h2>Your playlist <span class="count" id="track-count">—</span></h2>
-            <p class="muted">Discover your next favorite track.</p>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <label class="search-box">
-            <span>⌕</span>
-            <input id="search-input" type="search"
-              placeholder="Search songs or artists..." autocomplete="off">
-            <kbd>/</kbd>
-          </label>
-          <button id="load-list" class="secondary-button">
-            <span>↻</span> Load songs
-          </button>
-        </div>
-
-        <details class="api-settings">
-          <summary>⚙ YouTube API settings <span>Optional</span></summary>
-          <div class="api-panel">
-            <label for="api-key">YouTube Data API v3 key</label>
-            <input id="api-key" type="password"
-              placeholder="Paste your API key here"
-              autocomplete="off">
-            <p>Used to retrieve song titles and thumbnails. The key is not saved by this app. Avoid using a private or unrestricted key on a public website.</p>
-          </div>
-        </details>
-
-        <p id="list-status" class="list-status" role="status">
-          Add an API key and select “Load songs” to browse the playlist.
-        </p>
-        <div id="track-list" class="track-grid"></div>
-
-        <div id="load-more-wrap" class="load-more-wrap" hidden>
-          <button id="load-more" class="secondary-button">Load more songs</button>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <a href="#home" class="brand footer-brand">
-          <span class="brand-icon">T</span>
-          <span>Timo<span class="brand-accent">Music</span></span>
-        </a>
-        <p>Made for music lovers · Powered by YouTube</p>
-      </footer>
-    </main>
-  </div>
-
-  <script>
-    window.PLAYLIST_ID = "PLYb2yfXnHh-KBATeJ6NS5u_eSt8zBHdj1";
-  </script>
-  <script src="./js/app.js" defer></script>
+  <script src="./js/app.js"></script>
 </body>
 </html>
